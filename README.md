@@ -1,7 +1,7 @@
 # FinDash
 
 [![Unit Tests](https://github.com/GustavoKimura/findash/actions/workflows/ci.yml/badge.svg)](https://github.com/GustavoKimura/findash/actions/workflows/ci.yml)
-![Coverage](https://img.shields.io/badge/Coverage-95.95%25-brightgreen)
+![Coverage](./.github/badges/coverage.svg)
 
 [Acessar o FinDash (GitHub Pages)](https://gustavokimura.github.io/findash/)
 
