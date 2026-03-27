@@ -51,6 +51,8 @@ export class DashboardComponent {
             '#C9CBCF',
             '#7C4DFF',
           ],
+          borderColor: '#1F2937', // bg-gray-800
+          borderWidth: 2,
         },
       ],
     };
@@ -61,9 +63,13 @@ export class DashboardComponent {
     maintainAspectRatio: false,
     plugins: {
       legend: {
+        display: true,
         position: 'top',
         labels: {
-          color: '#D1D5DB', // text-gray-300
+          color: '#D1D5DB',
+          font: {
+            size: 12,
+          },
         },
       },
     },
