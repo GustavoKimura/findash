@@ -1,6 +1,6 @@
 # FinDash
 
-![Status dos Testes](https://github.com/<seu-usuario>/<seu-repositorio>/actions/workflows/ci.yml/badge.svg)
+[![Angular CI](https://github.com/GustavoKimura/findash/actions/workflows/ci.yml/badge.svg)](https://github.com/GustavoKimura/findash/actions/workflows/ci.yml)
 
 FinDash é uma aplicação de dashboard financeiro desenvolvida com Angular, projetada para ajudar os usuários a gerenciar suas finanças pessoais de forma simples e intuitiva. A aplicação permite o registro de receitas e despesas, oferecendo uma visualização clara do saldo e da distribuição de gastos por categoria.
 
