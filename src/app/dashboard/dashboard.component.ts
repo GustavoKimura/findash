@@ -10,12 +10,19 @@ import {
   TransactionType,
 } from '../core/transaction.model';
 import { TransactionService } from '../core/transaction.service';
+import { CurrencyMaskDirective } from '../shared/currency-mask.directive';
 import { ModalComponent } from '../shared/modal/modal.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BaseChartDirective, ModalComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    BaseChartDirective,
+    ModalComponent,
+    CurrencyMaskDirective,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -92,7 +99,7 @@ export class DashboardComponent {
     this.transactionForm.reset({
       id: null,
       description: '',
-      amount: null,
+      amount: 0,
       type: 'Despesa',
       category: this.categories[0],
       date: new Date().toISOString().substring(0, 10),

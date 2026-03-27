@@ -4,7 +4,7 @@
       <h1 class="text-2xl sm:text-3xl font-bold text-white">FinDash</h1>
       <button
         (click)="openAddModal()"
-        class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+        class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 cursor-pointer"
       >
         Adicionar Transação
       </button>
@@ -153,7 +153,7 @@
                   >
                     <button
                       (click)="openEditModal(transaction)"
-                      class="text-blue-400 hover:text-blue-600"
+                      class="text-blue-400 hover:text-blue-600 cursor-pointer"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +172,7 @@
                     </button>
                     <button
                       (click)="deleteTransaction(transaction.id)"
-                      class="text-red-500 hover:text-red-700"
+                      class="text-red-500 hover:text-red-700 cursor-pointer"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -220,10 +220,12 @@
           required
         />
         <input
-          type="number"
+          type="text"
+          inputmode="numeric"
           formControlName="amount"
           placeholder="Valor"
           class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
+          appCurrencyMask
           required
         />
       </div>
@@ -254,7 +256,7 @@
         <button
           type="submit"
           [disabled]="transactionForm.invalid"
-          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 cursor-pointer"
         >
           {{ editingTransaction() ? 'Salvar Alterações' : 'Adicionar' }}
         </button>
