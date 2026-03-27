@@ -43,10 +43,8 @@ describe('TransactionService', () => {
     TestBed.configureTestingModule({
       providers: [TransactionService],
     });
-
     service = TestBed.inject(TransactionService);
 
-    // Clear local storage and reset service state before each test
     localStorage.clear();
     (service as any).transactionsState.set([]);
   });
@@ -92,7 +90,7 @@ describe('TransactionService', () => {
 
     const transaction = service.transactions().find((t) => t.id === addedTransaction.id);
     expect(transaction?.amount).toBe(1600);
-    expect(localStorage.setItem).toHaveBeenCalledTimes(2); // add and update
+    expect(localStorage.setItem).toHaveBeenCalledTimes(2);
   });
 
   it('should delete a transaction', () => {
@@ -145,7 +143,7 @@ describe('TransactionService', () => {
 
     const expectedCategories = {
       Moradia: 1500,
-      Alimentação: 420, // 300 + 120
+      Alimentação: 420,
       Lazer: 50,
     };
     expect(service.expensesByCategory()).toEqual(expectedCategories);
