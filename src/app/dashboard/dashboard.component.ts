@@ -51,8 +51,9 @@ export class DashboardComponent {
             '#C9CBCF',
             '#7C4DFF',
           ],
-          borderColor: '#1F2937', // bg-gray-800
+          borderColor: '#1F2937',
           borderWidth: 2,
+          hoverBorderColor: '#374151',
         },
       ],
     };
@@ -64,15 +65,17 @@ export class DashboardComponent {
     plugins: {
       legend: {
         display: true,
-        position: 'top',
+        position: 'bottom',
         labels: {
           color: '#D1D5DB',
+          padding: 10,
           font: {
-            size: 12,
+            size: 10,
           },
         },
       },
     },
+    cutout: '60%',
   };
 
   addTransaction(): void {
