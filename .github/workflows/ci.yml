@@ -27,17 +27,22 @@ jobs:
       - name: Generate Coverage Badge
         run: |
           mkdir -p .github/badges
-          COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
-          COLOR=$(node -p "const t = $COVERAGE; t >= 80 ? 'brightgreen' : t >= 60 ? 'yellow' : 'red'")
-          curl -s "https://img.shields.io/badge/Coverage-${COVERAGE}%25-${COLOR}" > .github/badges/coverage.svg
+          if [ -f "./coverage/coverage-summary.json" ]; then
+            COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
+            COLOR=$(node -p "const t = $COVERAGE; t >= 80 ? 'brightgreen' : t >= 60 ? 'yellow' : 'red'")
+            curl -s "https://img.shields.io/badge/Coverage-${COVERAGE}%25-${COLOR}" > .github/badges/coverage.svg
+          fi
       - name: Commit Coverage Badge
         if: github.event_name == 'push'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: update coverage badge'
           file_pattern: '.github/badges/coverage.svg'
-      - name: Build and Deploy to GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Build for GitHub Pages
+        if: github.event_name == 'push'
+        run: npx ng build --configuration production --base-href /findash/
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run deploy
+        run: npx angular-cli-ghpages --dir=dist/findash/browser --repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" --name="github-actions[bot]" --email="github-actions[bot]@users.noreply.github.com"
