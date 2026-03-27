@@ -1,24 +1,30 @@
 <main class="bg-gray-900 text-gray-200 h-screen flex flex-col font-sans p-2 sm:p-4 overflow-hidden">
   <div class="max-w-7xl mx-auto flex flex-col w-full h-full">
-    <header class="mb-4 flex-shrink-0">
+    <header class="mb-4 flex-shrink-0 flex justify-between items-center">
       <h1 class="text-2xl sm:text-3xl font-bold text-white">FinDash</h1>
+      <button
+        (click)="openAddModal()"
+        class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+      >
+        Adicionar Transação
+      </button>
     </header>
 
     <section class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-4 flex-shrink-0">
       <div class="bg-gray-800 p-3 sm:p-4 rounded-lg shadow-lg flex items-center space-x-3">
-        <div class="bg-green-500 p-2 rounded-full flex-shrink-0">
+        <div class="bg-green-500 p-2 rounded-full flex-shrink-0 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-white"
+            class="h-6 w-6 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            stroke-width="2"
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 6a7.5 7.5 0 100 12 7.5 7.5 0 000-12z"
+              d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
             />
           </svg>
         </div>
@@ -80,83 +86,27 @@
     </section>
 
     <div class="flex-grow flex flex-col lg:flex-row gap-4 min-h-0">
-      <div class="lg:w-3/5 flex flex-col gap-4 h-1/2 lg:h-full min-h-0">
-        <section class="bg-gray-800 p-3 sm:p-4 rounded-lg shadow-lg flex-shrink-0">
-          <h3 class="text-base sm:text-lg font-semibold mb-2 text-white">Adicionar Transação</h3>
-          <form [formGroup]="transactionForm" (ngSubmit)="addTransaction()" class="space-y-2">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input
-                type="text"
-                formControlName="description"
-                placeholder="Descrição"
-                class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
-                required
-              />
-              <input
-                type="number"
-                formControlName="amount"
-                placeholder="Valor"
-                class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
-                required
-              />
+      <section
+        class="lg:w-3/5 bg-gray-800 p-2 sm:p-4 rounded-lg shadow-lg flex flex-col h-1/2 lg:h-full min-h-0"
+      >
+        <h3 class="text-base sm:text-lg font-semibold mb-2 text-white flex-shrink-0">
+          Despesas por Categoria
+        </h3>
+        <div class="chart-container flex-grow">
+          @if (doughnutChartData().datasets[0].data.length > 0) {
+            <canvas
+              baseChart
+              [data]="doughnutChartData()"
+              [type]="'doughnut'"
+              [options]="doughnutChartOptions"
+            ></canvas>
+          } @else {
+            <div class="flex items-center justify-center h-full text-gray-500">
+              <p>Nenhuma despesa registrada.</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <select
-                formControlName="type"
-                class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
-              >
-                <option value="Receita">Receita</option>
-                <option value="Despesa">Despesa</option>
-              </select>
-              <select
-                formControlName="category"
-                class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
-              >
-                @for (category of categories; track category) {
-                  <option [value]="category">{{ category }}</option>
-                }
-              </select>
-              <input
-                type="date"
-                formControlName="date"
-                class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
-                required
-              />
-            </div>
-            <div class="flex justify-end">
-              <button
-                type="submit"
-                [disabled]="transactionForm.invalid"
-                class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
-              >
-                Adicionar
-              </button>
-            </div>
-          </form>
-        </section>
-
-        <section
-          class="bg-gray-800 p-2 sm:p-4 rounded-lg shadow-lg flex flex-col flex-grow min-h-0"
-        >
-          <h3 class="text-base sm:text-lg font-semibold mb-2 text-white flex-shrink-0">
-            Despesas por Categoria
-          </h3>
-          <div class="chart-container flex-grow">
-            @if (doughnutChartData().datasets[0].data.length > 0) {
-              <canvas
-                baseChart
-                [data]="doughnutChartData()"
-                [type]="'doughnut'"
-                [options]="doughnutChartOptions"
-              ></canvas>
-            } @else {
-              <div class="flex items-center justify-center h-full text-gray-500">
-                <p>Nenhuma despesa registrada.</p>
-              </div>
-            }
-          </div>
-        </section>
-      </div>
+          }
+        </div>
+      </section>
 
       <section
         class="lg:w-2/5 bg-gray-800 p-2 sm:p-4 rounded-lg shadow-lg flex flex-col h-1/2 lg:h-full min-h-0"
@@ -180,12 +130,6 @@
                 >
                   Valor
                 </th>
-                <th
-                  scope="col"
-                  class="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden sm:table-cell"
-                >
-                  Categoria
-                </th>
                 <th scope="col" class="relative px-3 py-2"><span class="sr-only">Ações</span></th>
               </tr>
             </thead>
@@ -204,10 +148,28 @@
                   >
                     {{ transaction.amount | currency: 'BRL' }}
                   </td>
-                  <td class="px-3 py-3 whitespace-nowrap text-gray-300 hidden sm:table-cell">
-                    {{ transaction.category }}
-                  </td>
-                  <td class="px-3 py-3 whitespace-nowrap text-right font-medium">
+                  <td
+                    class="px-3 py-3 whitespace-nowrap text-right font-medium flex items-center space-x-2"
+                  >
+                    <button
+                      (click)="openEditModal(transaction)"
+                      class="text-blue-400 hover:text-blue-600"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z"
+                        />
+                      </svg>
+                    </button>
                     <button
                       (click)="deleteTransaction(transaction.id)"
                       class="text-red-500 hover:text-red-700"
@@ -231,7 +193,7 @@
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="4" class="px-6 py-12 text-center text-sm text-gray-500">
+                  <td colspan="3" class="px-6 py-12 text-center text-sm text-gray-500">
                     Nenhuma transação registrada.
                   </td>
                 </tr>
@@ -242,4 +204,61 @@
       </section>
     </div>
   </div>
+
+  <app-modal
+    [isOpen]="isAddModalOpen()"
+    [title]="editingTransaction() ? 'Editar Transação' : 'Adicionar Transação'"
+    (modalClose)="closeModal()"
+  >
+    <form [formGroup]="transactionForm" (ngSubmit)="submitTransaction()" class="space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input
+          type="text"
+          formControlName="description"
+          placeholder="Descrição"
+          class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
+          required
+        />
+        <input
+          type="number"
+          formControlName="amount"
+          placeholder="Valor"
+          class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
+          required
+        />
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <select
+          formControlName="type"
+          class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
+        >
+          <option value="Receita">Receita</option>
+          <option value="Despesa">Despesa</option>
+        </select>
+        <select
+          formControlName="category"
+          class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
+        >
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+        <input
+          type="date"
+          formControlName="date"
+          class="block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-sm focus:ring-blue-500 focus:border-blue-500 text-white px-3 py-2"
+          required
+        />
+      </div>
+      <div class="flex justify-end pt-4 mt-2 border-t border-gray-700">
+        <button
+          type="submit"
+          [disabled]="transactionForm.invalid"
+          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 text-white font-semibold rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+        >
+          {{ editingTransaction() ? 'Salvar Alterações' : 'Adicionar' }}
+        </button>
+      </div>
+    </form>
+  </app-modal>
 </main>

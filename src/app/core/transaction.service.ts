@@ -48,6 +48,13 @@ export class TransactionService {
     this.saveToLocalStorage();
   }
 
+  updateTransaction(updatedTransaction: Transaction): void {
+    this.transactionsState.update((transactions) =>
+      transactions.map((t) => (t.id === updatedTransaction.id ? updatedTransaction : t)),
+    );
+    this.saveToLocalStorage();
+  }
+
   deleteTransaction(id: string): void {
     this.transactionsState.update((transactions) => transactions.filter((t) => t.id !== id));
     this.saveToLocalStorage();

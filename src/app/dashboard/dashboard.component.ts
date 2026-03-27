@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { TRANSACTION_CATEGORIES } from '../core/transaction.model';
+import {
+  TRANSACTION_CATEGORIES,
+  Transaction,
+  TransactionCategory,
+  TransactionType,
+} from '../core/transaction.model';
 import { TransactionService } from '../core/transaction.service';
+import { ModalComponent } from '../shared/modal/modal.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BaseChartDirective],
+  imports: [CommonModule, ReactiveFormsModule, BaseChartDirective, ModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -20,12 +26,16 @@ export class DashboardComponent {
   public categories = TRANSACTION_CATEGORIES;
 
   public transactionForm = this.fb.group({
+    id: [null as string | null],
     description: ['', Validators.required],
     amount: [null as number | null, [Validators.required, Validators.min(0.01)]],
-    type: ['Despesa' as const, Validators.required],
-    category: [this.categories[0], Validators.required],
+    type: ['Despesa' as TransactionType, Validators.required],
+    category: [this.categories[0] as TransactionCategory, Validators.required],
     date: [new Date().toISOString().substring(0, 10), Validators.required],
   });
+
+  public isAddModalOpen = signal(false);
+  public editingTransaction = signal<Transaction | null>(null);
 
   public sortedTransactions = computed(() =>
     this.transactionService
@@ -78,9 +88,46 @@ export class DashboardComponent {
     cutout: '60%',
   };
 
-  addTransaction(): void {
-    if (this.transactionForm.valid && this.transactionForm.getRawValue()) {
-      const formValue = this.transactionForm.getRawValue();
+  openAddModal(): void {
+    this.transactionForm.reset({
+      id: null,
+      description: '',
+      amount: null,
+      type: 'Despesa',
+      category: this.categories[0],
+      date: new Date().toISOString().substring(0, 10),
+    });
+    this.editingTransaction.set(null);
+    this.isAddModalOpen.set(true);
+  }
+
+  openEditModal(transaction: Transaction): void {
+    this.transactionForm.patchValue(transaction);
+    this.editingTransaction.set(transaction);
+    this.isAddModalOpen.set(true);
+  }
+
+  closeModal(): void {
+    this.isAddModalOpen.set(false);
+    this.editingTransaction.set(null);
+  }
+
+  submitTransaction(): void {
+    if (this.transactionForm.invalid) {
+      return;
+    }
+    const formValue = this.transactionForm.getRawValue();
+
+    if (this.editingTransaction()) {
+      this.transactionService.updateTransaction({
+        id: this.editingTransaction()!.id,
+        description: formValue.description!,
+        amount: formValue.amount!,
+        type: formValue.type!,
+        category: formValue.category!,
+        date: formValue.date!,
+      });
+    } else {
       this.transactionService.addTransaction({
         description: formValue.description!,
         amount: formValue.amount!,
@@ -88,14 +135,9 @@ export class DashboardComponent {
         category: formValue.category!,
         date: formValue.date!,
       });
-      this.transactionForm.reset({
-        description: '',
-        amount: null,
-        type: 'Despesa',
-        category: this.categories[0],
-        date: new Date().toISOString().substring(0, 10),
-      });
     }
+
+    this.closeModal();
   }
 
   deleteTransaction(id: string): void {
