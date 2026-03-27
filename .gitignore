@@ -42,3 +42,8 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Personal
+/project-dumper.ps1
+/project_content.txt
+/project_structure.txt
