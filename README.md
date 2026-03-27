@@ -1,59 +1,69 @@
-# Findash
+# FinDash
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.5.
+![Status dos Testes](https://github.com/<seu-usuario>/<seu-repositorio>/actions/workflows/ci.yml/badge.svg)
 
-## Development server
+FinDash é uma aplicação de dashboard financeiro desenvolvida com Angular, projetada para ajudar os usuários a gerenciar suas finanças pessoais de forma simples e intuitiva. A aplicação permite o registro de receitas e despesas, oferecendo uma visualização clara do saldo e da distribuição de gastos por categoria.
 
-To start a local development server, run:
+## ✨ Funcionalidades
 
-```bash
-ng serve
-```
+-   **Dashboard Resumo:** Visualização rápida de receitas, despesas e saldo total.
+-   **Gráfico de Despesas:** Gráfico do tipo "doughnut" que exibe a distribuição de despesas por categoria.
+-   **Lista de Transações:** Histórico de transações recentes, ordenadas da mais nova para a mais antiga.
+-   **Operações CRUD:** Adicione, edite e exclua transações através de um modal interativo.
+-   **Persistência de Dados:** As transações são salvas localmente no navegador usando o `localStorage`.
+-   **Design Responsivo:** Interface moderna e adaptável a diferentes tamanhos de tela, construída com Tailwind CSS.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Tecnologias Utilizadas
 
-## Code scaffolding
+-   **Frontend:**
+    -   [Angular](https://angular.io/) v21+
+    -   [TypeScript](https://www.typescriptlang.org/)
+    -   [Tailwind CSS](https://tailwindcss.com/)
+    -   [Chart.js](https://www.chartjs.org/) & [ng2-charts](https://www.npmjs.com/package/ng2-charts) para gráficos
+-   **Testes:**
+    -   [Vitest](https://vitest.dev/)
+-   **CI/CD:**
+    -   [GitHub Actions](https://github.com/features/actions)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## ⚙️ Instalação e Execução
 
-```bash
-ng generate component component-name
-```
+Siga os passos abaixo para executar a aplicação localmente.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+**Pré-requisitos:**
+-   [Node.js](https://nodejs.org/) (versão 20.x ou superior)
+-   NPM (versão 10.x ou superior)
 
-```bash
-ng generate --help
-```
+**Passos:**
 
-## Building
+1.  **Clone o repositório:**
+    ```bash
+    git clone <url-do-repositorio>
+    cd findash
+    ```
 
-To build the project run:
+2.  **Instale as dependências:**
+    ```bash
+    npm install
+    ```
 
-```bash
-ng build
-```
+3.  **Inicie o servidor de desenvolvimento:**
+    ```bash
+    npm start
+    ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+A aplicação estará disponível em `http://localhost:4200/`.
 
-## Running unit tests
+## 🧪 Rodando os Testes
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Este projeto utiliza Vitest para testes unitários. Para executar os testes e ver o relatório de cobertura, use os seguintes comandos:
 
-```bash
-ng test
-```
+-   **Executar os testes em modo watch:**
+    ```bash
+    npm test
+    ```
+-   **Executar os testes uma vez e gerar o relatório de cobertura no terminal:**
+    ```bash
+    npm run test:coverage
+    ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+O relatório completo de cobertura também é gerado na pasta `coverage/` e pode ser visualizado abrindo o arquivo `index.html` em seu navegador.
